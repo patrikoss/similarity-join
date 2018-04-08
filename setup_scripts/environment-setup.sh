@@ -23,7 +23,8 @@ export DATANODE_PATH=/tmp/datanode
 # path to folder where the hadoop should be untarred
 export HADOOP_UNTAR_FOLDER=$USER_HOME/hadoop/cluster_distr
 
-export JAVA_HOME=/usr
+#export JAVA_HOME=/usr
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 # path to folder where .tar file of hadoop is stored
 export HADOOP_TAR_FOLDER=$USER_HOME/hadoop/tools
