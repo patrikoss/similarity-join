@@ -9,12 +9,13 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Reducer.Context;
 import org.apache.hadoop.mapreduce.lib.join.TupleWritable;
+import org.jboss.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 public class ReducerLSH
-	extends Reducer<IntWritable,IntWritable,TupleWritable,NullWritable> {
+	extends Reducer<IntWritable,IntWritable,Text,NullWritable> {
 
 	private static int bands;
-	private IntWritable outInts[] = new IntWritable[] {new IntWritable(), new IntWritable()};
+	private Text candidatePair = new Text();
 	private ArrayList<Integer> oddTweets = new ArrayList<Integer>();
 	private ArrayList<Integer> evenTweets = new ArrayList<Integer>();
 	
@@ -35,9 +36,8 @@ public class ReducerLSH
 		// save the tweets' candidate pairs
 		for(Integer oddTweet : oddTweets) {
 			for (Integer evenTweet : evenTweets) {
-				outInts[0].set(oddTweet.intValue());
-				outInts[1].set(evenTweet.intValue());
-				context.write(new TupleWritable(outInts), NullWritable.get());
+				candidatePair.set(oddTweet.toString() + ',' + evenTweet.toString());
+				context.write(candidatePair, NullWritable.get());
 			}
 		}
 		

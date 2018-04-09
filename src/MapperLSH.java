@@ -76,26 +76,27 @@ public class MapperLSH
 			}
 		}
 		
-		String bandHash = "";
+		String bandHash;
 		// divide the minhashing signature into predefined number of bands
 		// and output them
 		// the last band may have less than bandLength elements
 		int bandLength = (int) Math.ceil(this.signatureLength / (double) this.bands);
 		for(int bandNr = 0; bandNr < this.bands; bandNr++) {
+			bandHash = "";
 			for(int i=bandNr*bandLength; 
 				i < (bandNr+1)*bandLength && i < this.signatureLength; i++) {
 				
 				bandHash = bandHash.concat(Integer.toString(this.signature[i]));
 				bandHash.concat(",");
 			}
+			
+			// set hash of the band as output key
+			outInt1.set(bandHash.hashCode());
+			// set id of the tweet as output value
+			outInt2.set(Integer.parseInt(this.tweet[0]));
+			// output key-value for further processing
+			context.write(outInt1, outInt2);
 		}
-		
-		// set hash of the band as output key
-		outInt1.set(bandHash.hashCode());
-		// set id of the tweet as output value
-		outInt2.set(Integer.parseInt(this.tweet[0]));
-		// output key-value for further processing
-		context.write(outInt1, outInt2);
 		
     }
 }

@@ -1,7 +1,8 @@
 
-public class HammingDistance {
+public class HammingDistance implements SimilarityMeasure {
 
-	public static int calculate(String s1, String s2) {
+	@Override
+	public double calculate(String s1, String s2) {
 		int minLen = Math.min(s1.length(), s2.length());
 		int maxLen = Math.max(s1.length(), s2.length());
 		int difference = maxLen - minLen;

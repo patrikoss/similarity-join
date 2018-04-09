@@ -1,31 +1,31 @@
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-import org.apache.hadoop.mapreduce.lib.join.TupleWritable;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class LSH {
+public class SimilarityCalculatorJob {
 
-	public static boolean run(String inputPath, String outputPath) throws Exception {
+	public static boolean run(String tweetsFilepath, String inputPath, String outputPath) throws Exception {
 
 		Configuration conf = new Configuration();
+		conf.set("tweetsFilepath", tweetsFilepath);
 		FileSystem fs = FileSystem.get(conf);
-		Job job = Job.getInstance(conf, "Local sensitivity hashing");
+		Job job = Job.getInstance(conf, "Computing similarity measure on candidate pairs");
 		
-		job.setJarByClass(LSH.class);
-		job.setMapperClass(MapperLSH.class);
-		job.setReducerClass(ReducerLSH.class);
+		job.setJarByClass(SimilarityCalculatorJob.class);
+		job.setMapperClass(IdentityMapper.class);
+		job.setReducerClass(SimilarityCalculatorReducer.class);
   
-		job.setMapOutputKeyClass(IntWritable.class);
-		job.setMapOutputValueClass(IntWritable.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(NullWritable.class);
 		
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(NullWritable.class);
+		job.setOutputValueClass(DoubleWritable.class);
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);

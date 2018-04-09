@@ -5,24 +5,26 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.join.TupleWritable;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class LSH {
+
+public class UniqueCandidatePairJob {
 
 	public static boolean run(String inputPath, String outputPath) throws Exception {
 
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(conf);
-		Job job = Job.getInstance(conf, "Local sensitivity hashing");
+		Job job = Job.getInstance(conf, "Removing duplicate candidate pairs");
 		
-		job.setJarByClass(LSH.class);
-		job.setMapperClass(MapperLSH.class);
-		job.setReducerClass(ReducerLSH.class);
+		job.setJarByClass(UniqueCandidatePairJob.class);
+		job.setMapperClass(IdentityMapper.class);
+		job.setReducerClass(UniqueCandidatePairReducer.class);
   
-		job.setMapOutputKeyClass(IntWritable.class);
-		job.setMapOutputValueClass(IntWritable.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(NullWritable.class);
 		
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(NullWritable.class);
