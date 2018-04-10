@@ -13,7 +13,7 @@ do
     $HADOOP_PREFIX/bin/hadoop com.sun.tools.javac.Main *.java
     jar cf $operator.jar *.class
     echo "Run with command:"
-    echo "$HADOOP_PREFIX/bin/hadoop jar $operator.jar Main /inputfile /tmpfolder1 /tmpfolder2 /outputfolder"
+    echo "$HADOOP_PREFIX/bin/hadoop jar $operator.jar Main /inputfile /tmpfolder1 /tmpfolder2 /outputfolder similarity_measure shingle_length"
 
 done
 

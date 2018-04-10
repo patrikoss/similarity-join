@@ -10,9 +10,20 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 public class SimilarityCalculatorJob {
 
-	public static boolean run(String tweetsFilepath, String inputPath, String outputPath) throws Exception {
+	public static boolean run(String tweetsFilepath, String inputPath, String outputPath, 
+			String similarityMeasure, int shingleLength) throws Exception {
 
 		Configuration conf = new Configuration();
+		JaccardSimilarity s = new JaccardSimilarity(5);
+		
+		similarityMeasure = similarityMeasure.toLowerCase();
+		if(similarityMeasure.equals("jaccard_similarity")) {
+			conf.set("similarityMeasure", similarityMeasure);
+			conf.setInt("shingleLength", shingleLength);
+		} else if(similarityMeasure.equals("hamming_distance")) {
+			conf.set("similarityMeasure", similarityMeasure);
+		}
+		
 		conf.set("tweetsFilepath", tweetsFilepath);
 		FileSystem fs = FileSystem.get(conf);
 		Job job = Job.getInstance(conf, "Computing similarity measure on candidate pairs");
