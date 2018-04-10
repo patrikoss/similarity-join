@@ -5,7 +5,7 @@ source $ENV_FILE
 
 export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
 
-operators=( "LSH" )
+operators=( "Main" )
 
 for operator in "${operators[@]}"
 do
@@ -13,7 +13,7 @@ do
     $HADOOP_PREFIX/bin/hadoop com.sun.tools.javac.Main *.java
     jar cf $operator.jar *.class
     echo "Run with command:"
-    echo "$HADOOP_PREFIX/bin/hadoop jar $operator.jar Main /inputfolder /outputfolder"
+    echo "$HADOOP_PREFIX/bin/hadoop jar $operator.jar Main /inputfile /tmpfolder1 /tmpfolder2 /outputfolder"
 
 done
 

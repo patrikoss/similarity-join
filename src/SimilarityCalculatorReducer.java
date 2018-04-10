@@ -12,8 +12,8 @@ public class SimilarityCalculatorReducer extends Reducer<Text, NullWritable, Tex
 	private HdfsTweetsFileReader tweets;
 	private String[] candidatePair;
 	String tweet1Content, tweet2Content;
-	private DoubleWritable outDuble;
-	private Text outText;
+	private DoubleWritable outDuble = new DoubleWritable();
+	private Text outText = new Text();
 	
 	@Override
 	protected void setup(Context context) throws IOException, InterruptedException{
