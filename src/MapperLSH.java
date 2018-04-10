@@ -43,8 +43,6 @@ public class MapperLSH
 			int seedi = random.nextInt();
 			// initialize hash function for signature generation
 			this.minHashFunction[i] = new MinHashFunction(seedi);
-			// initialize the signature values
-			this.signature[i] = Integer.MAX_VALUE;
 		}
 		
 	}
@@ -63,6 +61,12 @@ public class MapperLSH
 		// if the tweet has no id(e.g csv header), then stop processing it
 		if (this.tweet[0].length() == 0) {
 			return;
+		}
+		
+		//reset the signature array
+		for(int i = 0; i < this.signatureLength; i++) {
+			// initialize the signature values
+			this.signature[i] = Integer.MAX_VALUE;
 		}
 		
 		shingles = Shingles.getShingles(this.tweet[1], shingleLength);
